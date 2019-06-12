@@ -17,8 +17,12 @@ public class PmsProductQueryParam {
     private String productSn;
     @ApiModelProperty("商品分类编号")
     private Long productCategoryId;
+    @ApiModelProperty("商品分类名称")
+    private String productCategoryName;
     @ApiModelProperty("商品品牌编号")
     private Long brandId;
+    @ApiModelProperty("商品品牌名称")
+    private String brandName;
 
     public Integer getPublishStatus() {
         return publishStatus;
@@ -66,5 +70,21 @@ public class PmsProductQueryParam {
 
     public void setBrandId(Long brandId) {
         this.brandId = brandId;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
+
+    public String getProductCategoryName() {
+        return productCategoryName;
+    }
+
+    public void setProductCategoryName(String productCategoryName) {
+        this.productCategoryName = productCategoryName;
     }
 }

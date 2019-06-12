@@ -15,6 +15,11 @@ public interface PmsSkuStockService {
     List<PmsSkuStock> getList(Long pid, String keyword);
 
     /**
+     * 根据产品id搜索
+     */
+    List<PmsSkuStock> getSkuListByProductId(Long pid);
+
+    /**
      * 批量更新商品库存信息
      */
     int update(Long pid, List<PmsSkuStock> skuStockList);

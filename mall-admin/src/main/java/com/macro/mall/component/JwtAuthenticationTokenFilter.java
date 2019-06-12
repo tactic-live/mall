@@ -15,9 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * JWT登录授权过滤器
@@ -39,6 +42,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         String authHeader = request.getHeader(this.tokenHeader);
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Optional<Cookie> foundCookie = Arrays.stream(cookies).filter(cookie -> "loginToken".equals(cookie.getName())).findFirst();
+            if (foundCookie.isPresent()) {
+                authHeader = foundCookie.get().getValue();
+            }
+        }
         if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
             String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
             String username = jwtTokenUtil.getUserNameFromToken(authToken);
