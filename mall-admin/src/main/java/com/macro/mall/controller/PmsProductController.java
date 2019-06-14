@@ -67,11 +67,22 @@ public class PmsProductController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:product:read')")
+    @Deprecated
     public CommonResult<CommonPage<PmsProduct>> getList(PmsProductQueryParam productQueryParam,
                                                         @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<PmsProduct> productList = productService.list(productQueryParam, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(productList));
+    }
+
+    @ApiOperation("查询商品")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:product:read')")
+    public CommonResult<CommonPage<PmsProduct>> getProductList(PmsProductQueryParam productQueryParam,
+                                                        @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        return this.getList(productQueryParam, pageSize, pageNum);
     }
 
     @ApiOperation("根据商品名称或货号模糊查询")

@@ -8,6 +8,7 @@ import com.macro.mall.model.PmsProductCategory;
 import com.macro.mall.service.PmsProductCategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class PmsProductCategoryController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:productCategory:create')")
     public CommonResult create(@Validated @RequestBody PmsProductCategoryParam productCategoryParam,
-                         BindingResult result) {
+                               BindingResult result) {
         int count = productCategoryService.create(productCategoryParam);
         if (count > 0) {
             return CommonResult.success(count);
@@ -47,9 +49,9 @@ public class PmsProductCategoryController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
     public CommonResult update(@PathVariable Long id,
-                         @Validated
-                         @RequestBody PmsProductCategoryParam productCategoryParam,
-                         BindingResult result) {
+                               @Validated
+                               @RequestBody PmsProductCategoryParam productCategoryParam,
+                               BindingResult result) {
         int count = productCategoryService.update(id, productCategoryParam);
         if (count > 0) {
             return CommonResult.success(count);
@@ -67,6 +69,21 @@ public class PmsProductCategoryController {
                                                                 @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<PmsProductCategory> productCategoryList = productCategoryService.getList(parentId, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(productCategoryList));
+    }
+
+    @ApiOperation("分页查询商品分类")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:productCategory:read')")
+    public CommonResult<CommonPage<PmsProductCategory>> getListByParentId(@RequestParam(value = "parentId", defaultValue = "0") String parentId,
+                                                                          @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                                          @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        if (!StringUtils.isEmpty(parentId) && StringUtils.isNumeric(parentId)) {
+            List<PmsProductCategory> productCategoryList =
+                    productCategoryService.getList(Long.parseLong(parentId), pageSize, pageNum);
+            return CommonResult.success(CommonPage.restPage(productCategoryList));
+        }
+        return CommonResult.success(CommonPage.restPage(new ArrayList()));
     }
 
     @ApiOperation("根据id获取商品分类")

@@ -76,6 +76,13 @@ public class PmsProductAttributeCategoryController {
         return CommonResult.success(CommonPage.restPage(productAttributeCategoryList));
     }
 
+    @ApiOperation("分页获取所有商品属性分类")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<PmsProductAttributeCategory>> getAllList(@RequestParam(defaultValue = "5") Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum) {
+        return this.getList(pageSize, pageNum);
+    }
+
     @ApiOperation("获取所有商品属性分类及其下属性")
     @RequestMapping(value = "/list/withAttr", method = RequestMethod.GET)
     @ResponseBody

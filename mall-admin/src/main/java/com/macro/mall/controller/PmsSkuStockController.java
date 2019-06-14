@@ -54,4 +54,18 @@ public class PmsSkuStockController {
             return CommonResult.failed();
         }
     }
+
+    @ApiOperation("批量更新库存信息")
+    @RequestMapping(value = "/batch/{pid}", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult updateSkuStocksByProductId(@PathVariable Long pid, @RequestBody List<PmsSkuStock> skuStockList) {
+        return update(pid, skuStockList);
+    }
+
+//    @ApiOperation("批量部分更新库存信息")
+//    @RequestMapping(value = "/batch/{pid}", method = RequestMethod.PATCH)
+//    @ResponseBody
+//    public CommonResult patchSkuStocksByProductId(@PathVariable Long pid, @RequestBody List<PmsSkuStock> skuStockList) {
+//        return update(pid, skuStockList);
+//    }
 }
