@@ -142,4 +142,21 @@ public class PmsProductCategoryController {
         List<PmsProductCategoryWithChildrenItem> list = productCategoryService.listWithChildren();
         return CommonResult.success(list);
     }
+
+
+    @ApiOperation("修改商品分类信息")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:productCategory:update')")
+    public CommonResult updateProductCategory(@PathVariable Long id,
+                                              @Validated
+                                              @RequestBody PmsProductCategoryParam productCategoryParam,
+                                              BindingResult result) {
+        int count = productCategoryService.update(id, productCategoryParam);
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
 }

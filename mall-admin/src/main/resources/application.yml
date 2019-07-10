@@ -26,6 +26,18 @@ aliyun:
     dir:
       prefix: mall/images/ # 上传文件夹路径前缀
 
+qcloud:
+  oss:
+    accessKeyId: AKIDwiEV0GN2YqvkJcdXcT4PVMxNktoUFFI5 # 访问身份验证中用到用户标识
+    accessKeySecret: jCPM4MPHtFNN8e4LM7fz3sX4QYQ3XlkT # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: lg-jaj9ub0g-1254151762 # oss的存储空间
+    region: ap-shanghai # 存储桶所在的区域，COS 地域的简称
+    policy:
+      expire: 300 # 签名有效期(S)
+    maxSize: 10 # 上传文件大小(M)
+    dir:
+      prefix: mall/images/ # 上传文件夹路径前缀
+
 logging:
   level:
     root: info #日志配置DEBUG,INFO,WARN,ERROR

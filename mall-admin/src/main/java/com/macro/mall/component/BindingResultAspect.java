@@ -2,6 +2,7 @@ package com.macro.mall.component;
 
 import com.macro.mall.common.api.CommonResult;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -9,6 +10,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * HibernateValidator错误结果处理切面
@@ -38,6 +41,19 @@ public class BindingResultAspect {
                 }
             }
         }
-        return joinPoint.proceed();
+        Object result = joinPoint.proceed();
+//        if(joinPoint.getSignature().getName().startsWith("cache")) {
+//            CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS);
+//            result = ResponseEntity.ok().cacheControl(cacheControl).body(result);
+//        } else {
+//            result = ResponseEntity.ok().body(result);
+//        }
+        return result;
+    }
+
+    @AfterReturning(returning = "result", pointcut = "BindingResult()")
+    public void doAfterReturning(Object result){
+//        CommonResult responseMessage = (CommonResult) result;
+
     }
 }

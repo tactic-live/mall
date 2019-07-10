@@ -34,7 +34,7 @@ import java.util.Map;
  * 统一日志处理切面
  * Created by macro on 2018/4/26.
  */
-@Aspect
+//@Aspect
 @Component
 @Order(1)
 public class WebLogAspect {
@@ -62,32 +62,32 @@ public class WebLogAspect {
         //记录请求信息(通过logstash传入elasticsearch)
         WebLog webLog = new WebLog();
         Object result = joinPoint.proceed();
-        Signature signature = joinPoint.getSignature();
-        MethodSignature methodSignature = (MethodSignature) signature;
-        Method method = methodSignature.getMethod();
-        if (method.isAnnotationPresent(ApiOperation.class)) {
-            ApiOperation log = method.getAnnotation(ApiOperation.class);
-            webLog.setDescription(log.value());
-        }
-        long endTime = System.currentTimeMillis();
-        String urlStr = request.getRequestURL().toString();
-        webLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.url(urlStr).getPath()));
-        webLog.setIp(request.getRemoteUser());
-        webLog.setMethod(request.getMethod());
-        webLog.setParameter(getParameter(method, joinPoint.getArgs()));
-        webLog.setResult(result);
-        webLog.setSpendTime((int) (endTime - startTime.get()));
-        webLog.setStartTime(startTime.get());
-        webLog.setUri(request.getRequestURI());
-        webLog.setUrl(request.getRequestURL().toString());
-        Map<String,Object> logMap = new HashMap<>();
-        logMap.put("url",webLog.getUrl());
-        logMap.put("method",webLog.getMethod());
-        logMap.put("parameter",webLog.getParameter());
-        logMap.put("spendTime",webLog.getSpendTime());
-        logMap.put("description",webLog.getDescription());
+//        Signature signature = joinPoint.getSignature();
+//        MethodSignature methodSignature = (MethodSignature) signature;
+//        Method method = methodSignature.getMethod();
+//        if (method.isAnnotationPresent(ApiOperation.class)) {
+//            ApiOperation log = method.getAnnotation(ApiOperation.class);
+//            webLog.setDescription(log.value());
+//        }
+//        long endTime = System.currentTimeMillis();
+//        String urlStr = request.getRequestURL().toString();
+//        webLog.setBasePath(StrUtil.removeSuffix(urlStr, URLUtil.url(urlStr).getPath()));
+//        webLog.setIp(request.getRemoteUser());
+//        webLog.setMethod(request.getMethod());
+//        webLog.setParameter(getParameter(method, joinPoint.getArgs()));
+//        webLog.setResult(result);
+//        webLog.setSpendTime((int) (endTime - startTime.get()));
+//        webLog.setStartTime(startTime.get());
+//        webLog.setUri(request.getRequestURI());
+//        webLog.setUrl(request.getRequestURL().toString());
+//        Map<String,Object> logMap = new HashMap<>();
+//        logMap.put("url",webLog.getUrl());
+//        logMap.put("method",webLog.getMethod());
+//        logMap.put("parameter",webLog.getParameter());
+//        logMap.put("spendTime",webLog.getSpendTime());
+//        logMap.put("description",webLog.getDescription());
 //        LOGGER.info("{}", JSONUtil.parse(webLog));
-        LOGGER.info(Markers.appendEntries(logMap), JSONUtil.parse(webLog).toString());
+//        LOGGER.info(Markers.appendEntries(logMap), JSONUtil.parse(webLog).toString());
         return result;
     }
 

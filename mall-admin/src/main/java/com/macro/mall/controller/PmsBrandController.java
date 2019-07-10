@@ -2,12 +2,15 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.common.api.CommonResultEntity;
+import com.macro.mall.dto.PmsBrandBatchUpdateParam;
 import com.macro.mall.dto.PmsBrandParam;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.service.PmsBrandService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,6 +36,21 @@ public class PmsBrandController {
     @PreAuthorize("hasAuthority('pms:brand:read')")
     public CommonResult<List<PmsBrand>> getList() {
         return CommonResult.success(brandService.listAllBrand());
+    }
+
+    @ApiOperation(value = "添加品牌")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:create')")
+    public CommonResult createBrand(@Validated @RequestBody PmsBrandParam pmsBrand, BindingResult result) {
+        CommonResult commonResult;
+        int count = brandService.createBrand(pmsBrand);
+        if (count == 1) {
+            commonResult = CommonResult.success(count);
+        } else {
+            commonResult = CommonResult.failed();
+        }
+        return commonResult;
     }
 
     @ApiOperation(value = "添加品牌")
@@ -67,11 +85,41 @@ public class PmsBrandController {
         return commonResult;
     }
 
+    @ApiOperation(value = "更新品牌")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:update')")
+    public CommonResult updateBrand(@PathVariable("id") Long id,
+                               @Validated @RequestBody PmsBrandParam pmsBrandParam,
+                               BindingResult result) {
+        CommonResult commonResult;
+        int count = brandService.updateBrand(id, pmsBrandParam);
+        if (count == 1) {
+            commonResult = CommonResult.success(count);
+        } else {
+            commonResult = CommonResult.failed();
+        }
+        return commonResult;
+    }
+
     @ApiOperation(value = "删除品牌")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")
     public CommonResult delete(@PathVariable("id") Long id) {
+        int count = brandService.deleteBrand(id);
+        if (count == 1) {
+            return CommonResult.success(null);
+        } else {
+            return CommonResult.failed();
+        }
+    }
+
+    @ApiOperation(value = "删除品牌")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:delete')")
+    public CommonResult deleteBrand(@PathVariable("id") Long id) {
         int count = brandService.deleteBrand(id);
         if (count == 1) {
             return CommonResult.success(null);
@@ -87,6 +135,18 @@ public class PmsBrandController {
     public CommonResult<CommonPage<PmsBrand>> getList(@RequestParam(value = "keyword", required = false) String keyword,
                                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                       @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
+        List<PmsBrand> brandList = brandService.listBrand(keyword, pageNum, pageSize);
+        return CommonResult.success(CommonPage.restPage(brandList));
+    }
+
+
+    @ApiOperation(value = "根据品牌名称分页获取品牌列表")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:read')")
+    public CommonResult<CommonPage<PmsBrand>> getBrandList(@RequestParam(value = "keyword", required = false) String keyword,
+                                                           @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                           @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
         List<PmsBrand> brandList = brandService.listBrand(keyword, pageNum, pageSize);
         return CommonResult.success(CommonPage.restPage(brandList));
     }
@@ -117,7 +177,7 @@ public class PmsBrandController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public CommonResult updateShowStatus(@RequestParam("ids") List<Long> ids,
-                                   @RequestParam("showStatus") Integer showStatus) {
+                                         @RequestParam("showStatus") Integer showStatus) {
         int count = brandService.updateShowStatus(ids, showStatus);
         if (count > 0) {
             return CommonResult.success(count);
@@ -131,7 +191,7 @@ public class PmsBrandController {
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public CommonResult updateFactoryStatus(@RequestParam("ids") List<Long> ids,
-                                      @RequestParam("factoryStatus") Integer factoryStatus) {
+                                            @RequestParam("factoryStatus") Integer factoryStatus) {
         int count = brandService.updateFactoryStatus(ids, factoryStatus);
         if (count > 0) {
             return CommonResult.success(count);
@@ -139,4 +199,35 @@ public class PmsBrandController {
             return CommonResult.failed();
         }
     }
+
+    @ApiOperation(value = "批量更新厂家制造商状态")
+    @RequestMapping(value = "/batch/factoryStatus", method = RequestMethod.PATCH)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:update')")
+    public CommonResult updateFactoryStatusJson(
+            @RequestBody PmsBrandBatchUpdateParam pmsBrandBatchUpdateParam) {
+
+        int count = brandService.updateFactoryStatus(pmsBrandBatchUpdateParam.getIds(), pmsBrandBatchUpdateParam.getFactoryStatus());
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
+
+    @ApiOperation(value = "批量更新显示状态")
+    @RequestMapping(value = "/batch/showStatus", method = RequestMethod.PATCH)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:brand:update')")
+    public CommonResult updateShowStatusJson(@RequestBody PmsBrandBatchUpdateParam pmsBrandBatchUpdateParam) {
+        int count = brandService.updateShowStatus(pmsBrandBatchUpdateParam.getIds(), pmsBrandBatchUpdateParam.getShowStatus());
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
+
+
+
 }
