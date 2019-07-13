@@ -44,6 +44,20 @@ public class PmsProductCategoryController {
         }
     }
 
+    @ApiOperation("添加产品分类")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:productCategory:create')")
+    public CommonResult createProductCategory(@Validated @RequestBody PmsProductCategoryParam productCategoryParam,
+                               BindingResult result) {
+        int count = productCategoryService.create(productCategoryParam);
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
+
     @ApiOperation("修改商品分类")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
