@@ -34,6 +34,13 @@ public class CmsSubjectController {
         return CommonResult.success(subjectList);
     }
 
+    @ApiOperation("获取全部商品专题")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<CmsSubject>> fetchAll() {
+        return this.listAll();
+    }
+
     @ApiOperation(value = "根据专题名称分页获取专题")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody

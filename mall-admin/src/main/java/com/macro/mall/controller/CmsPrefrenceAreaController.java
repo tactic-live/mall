@@ -31,4 +31,11 @@ public class CmsPrefrenceAreaController {
         List<CmsPrefrenceArea> prefrenceAreaList = prefrenceAreaService.listAll();
         return CommonResult.success(prefrenceAreaList);
     }
+
+    @ApiOperation("获取所有商品优选")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<CmsPrefrenceArea>> fetchAll() {
+        return this.listAll();
+    }
 }
