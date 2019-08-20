@@ -34,6 +34,15 @@ public class OmsOrderController {
         return CommonResult.success(CommonPage.restPage(orderList));
     }
 
+    @ApiOperation("查询订单")
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<CommonPage<OmsOrder>> fetch(OmsOrderQueryParam queryParam,
+                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        return this.list(queryParam, pageSize, pageNum);
+    }
+
     @ApiOperation("批量发货")
     @RequestMapping(value = "/update/delivery", method = RequestMethod.POST)
     @ResponseBody

@@ -27,6 +27,13 @@ public class SmsFlashPromotionSessionController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult create(@RequestBody SmsFlashPromotionSession promotionSession) {
+        return this.createOne(promotionSession);
+    }
+
+    @ApiOperation("添加场次")
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult createOne(@RequestBody SmsFlashPromotionSession promotionSession) {
         int count = flashPromotionSessionService.create(promotionSession);
         if (count > 0) {
             return CommonResult.success(count);
