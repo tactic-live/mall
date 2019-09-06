@@ -1,5 +1,6 @@
 package com.macro.mall.util;
 
+import com.macro.mall.model.UmsAdmin;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ import java.util.Map;
 public class JwtTokenUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
     private static final String CLAIM_KEY_USERNAME = "sub";
+    private static final String CLAIM_KEY_ID = "CLAIM_KEY_ID";
+    private static final String CLAIM_KEY_ICON = "CLAIM_KEY_ICON";
+    private static final String CLAIM_KEY_NICKNAME = "CLAIM_KEY_NICKNAME";
     private static final String CLAIM_KEY_CREATED = "created";
     @Value("${jwt.secret}")
     private String secret;
@@ -108,11 +112,33 @@ public class JwtTokenUtil {
     }
 
     /**
+     * 从token中获取用户信息
+     */
+//    private Date getUmsAdminFromToken(String token) {
+//        Claims claims = getClaimsFromToken(token);
+//        UmsAdmin umsAdmin = claims.get()
+//        return claims.get("");
+//    }
+
+    /**
      * 根据用户信息生成token
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return generateToken(claims);
+    }
+
+    /**
+     * 根据用户信息生成token
+     */
+    public String generateToken(UmsAdmin umsAdmin) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_USERNAME, umsAdmin.getUsername());
+        claims.put(CLAIM_KEY_ID, umsAdmin.getId());
+        claims.put(CLAIM_KEY_ICON, umsAdmin.getIcon());
+        claims.put(CLAIM_KEY_NICKNAME, umsAdmin.getNickName());
         claims.put(CLAIM_KEY_CREATED, new Date());
         return generateToken(claims);
     }

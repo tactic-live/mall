@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SysMenu implements Serializable {
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "标题")
     private String title;
@@ -29,11 +29,11 @@ public class SysMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

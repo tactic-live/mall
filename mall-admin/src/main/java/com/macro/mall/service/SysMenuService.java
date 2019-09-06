@@ -9,10 +9,11 @@ import java.util.List;
  *
  * @author land
  */
-public interface SysMenuService {
+public interface SysMenuService extends CommOperate<SysMenu> {
 
     /**
      * 获取所有菜单信息
      */
     List<SysMenu> list();
+
 }

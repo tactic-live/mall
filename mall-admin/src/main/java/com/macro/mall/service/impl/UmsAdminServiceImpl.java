@@ -108,6 +108,10 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            UmsAdminExample umsAdminExample = new UmsAdminExample();
+            umsAdminExample.createCriteria().andUsernameEqualTo(username);
+            List<UmsAdmin> umsAdmins = adminMapper.selectByExample(umsAdminExample);
+
             token = jwtTokenUtil.generateToken(userDetails);
 //            updateLoginTimeByUsername(username);
             insertLoginLog(username);
