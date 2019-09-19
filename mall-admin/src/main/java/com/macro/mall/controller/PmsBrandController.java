@@ -42,7 +42,7 @@ public class PmsBrandController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:create')")
-    public CommonResult createBrand(@Validated @RequestBody PmsBrandParam pmsBrand, BindingResult result) {
+    public CommonResult<Integer> createBrand(@Validated @RequestBody PmsBrandParam pmsBrand, BindingResult result) {
         CommonResult commonResult;
         int count = brandService.createBrand(pmsBrand);
         if (count == 1) {
@@ -57,7 +57,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:create')")
-    public CommonResult create(@Validated @RequestBody PmsBrandParam pmsBrand, BindingResult result) {
+    public CommonResult<Integer> create(@Validated @RequestBody PmsBrandParam pmsBrand, BindingResult result) {
         CommonResult commonResult;
         int count = brandService.createBrand(pmsBrand);
         if (count == 1) {
@@ -72,7 +72,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult update(@PathVariable("id") Long id,
+    public CommonResult<Integer> update(@PathVariable("id") Long id,
                                @Validated @RequestBody PmsBrandParam pmsBrandParam,
                                BindingResult result) {
         CommonResult commonResult;
@@ -89,7 +89,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult updateBrand(@PathVariable("id") Long id,
+    public CommonResult<Integer> updateBrand(@PathVariable("id") Long id,
                                @Validated @RequestBody PmsBrandParam pmsBrandParam,
                                BindingResult result) {
         CommonResult commonResult;
@@ -106,10 +106,10 @@ public class PmsBrandController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")
-    public CommonResult delete(@PathVariable("id") Long id) {
+    public CommonResult<Integer> delete(@PathVariable("id") Long id) {
         int count = brandService.deleteBrand(id);
         if (count == 1) {
-            return CommonResult.success(null);
+            return CommonResult.success(count);
         } else {
             return CommonResult.failed();
         }
@@ -119,7 +119,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")
-    public CommonResult deleteBrand(@PathVariable("id") Long id) {
+    public CommonResult<Integer> deleteBrand(@PathVariable("id") Long id) {
         int count = brandService.deleteBrand(id);
         if (count == 1) {
             return CommonResult.success(null);
@@ -163,7 +163,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/delete/batch", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:delete')")
-    public CommonResult deleteBatch(@RequestParam("ids") List<Long> ids) {
+    public CommonResult<Integer> deleteBatch(@RequestParam("ids") List<Long> ids) {
         int count = brandService.deleteBrand(ids);
         if (count > 0) {
             return CommonResult.success(count);
@@ -176,7 +176,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/update/showStatus", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult updateShowStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Integer> updateShowStatus(@RequestParam("ids") List<Long> ids,
                                          @RequestParam("showStatus") Integer showStatus) {
         int count = brandService.updateShowStatus(ids, showStatus);
         if (count > 0) {
@@ -190,7 +190,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/update/factoryStatus", method = RequestMethod.POST)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult updateFactoryStatus(@RequestParam("ids") List<Long> ids,
+    public CommonResult<Integer> updateFactoryStatus(@RequestParam("ids") List<Long> ids,
                                             @RequestParam("factoryStatus") Integer factoryStatus) {
         int count = brandService.updateFactoryStatus(ids, factoryStatus);
         if (count > 0) {
@@ -204,7 +204,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/batch/factoryStatus", method = RequestMethod.PATCH)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult updateFactoryStatusJson(
+    public CommonResult<Integer> updateFactoryStatusJson(
             @RequestBody PmsBrandBatchUpdateParam pmsBrandBatchUpdateParam) {
 
         int count = brandService.updateFactoryStatus(pmsBrandBatchUpdateParam.getIds(), pmsBrandBatchUpdateParam.getFactoryStatus());
@@ -219,7 +219,7 @@ public class PmsBrandController {
     @RequestMapping(value = "/batch/showStatus", method = RequestMethod.PATCH)
     @ResponseBody
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public CommonResult updateShowStatusJson(@RequestBody PmsBrandBatchUpdateParam pmsBrandBatchUpdateParam) {
+    public CommonResult<Integer> updateShowStatusJson(@RequestBody PmsBrandBatchUpdateParam pmsBrandBatchUpdateParam) {
         int count = brandService.updateShowStatus(pmsBrandBatchUpdateParam.getIds(), pmsBrandBatchUpdateParam.getShowStatus());
         if (count > 0) {
             return CommonResult.success(count);

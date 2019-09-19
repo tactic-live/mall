@@ -54,6 +54,13 @@ public class SysMenuController {
         UmsAdmin userInfo = adminService.getAdminByUsername(username);
         sysMenu.setUpdateUser(userInfo.getId());
         int count = sysMenuService.update(sysMenu.getId(), sysMenu);
+        return CommonResult.success(count);
+    }
+
+    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
+    @ApiOperation("删除菜单")
+    public CommonResult<Integer> deleteSysMenu(@PathVariable String id) {
+        int count = sysMenuService.delete(Long.parseLong(id));
         if (count > 0) {
             return CommonResult.success(count);
         }
