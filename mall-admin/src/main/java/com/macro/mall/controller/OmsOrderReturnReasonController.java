@@ -4,6 +4,7 @@ import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.model.OmsOrderReturnReason;
 import com.macro.mall.service.OmsOrderReturnReasonService;
+import com.macro.mall.dto.OmsUpdateReturnReasonStatusParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,29 @@ public class OmsOrderReturnReasonController {
     public CommonResult updateStatus(@RequestParam(value = "status") Integer status,
                                      @RequestParam("ids") List<Long> ids) {
         int count = orderReturnReasonService.updateStatus(ids, status);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改退货原因启用状态")
+    @RequestMapping(value = "/status", method = RequestMethod.PUT)
+    @ResponseBody
+    public CommonResult updateStatus(@RequestBody OmsUpdateReturnReasonStatusParam returnReasonStatusParam) {
+        int count = orderReturnReasonService.updateStatus(returnReasonStatusParam.getIds(), returnReasonStatusParam.getStatus());
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+
+    @ApiOperation("修改退货原因")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult update(@RequestBody OmsOrderReturnReason returnReason) {
+        int count = orderReturnReasonService.update(returnReason.getId(), returnReason);
         if (count > 0) {
             return CommonResult.success(count);
         }
