@@ -66,4 +66,20 @@ public class OmsOrderReturnApplyController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("修改申请状态")
+    @RequestMapping(value = "/status", method = RequestMethod.PUT)
+    @ResponseBody
+    public CommonResult updateStatus(@RequestBody OmsUpdateStatusParam statusParam) {
+
+        if(false) {
+            return CommonResult.validateFailed("分解分解诶");
+        }
+
+        int count = returnApplyService.updateStatus(statusParam.getId(), statusParam);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
 }

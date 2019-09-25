@@ -29,4 +29,13 @@ public class OmsUpdateStatusParam {
     private String receiveMan;
     @ApiModelProperty("申请状态：1->退货中；2->已完成；3->已拒绝")
     private Integer status;
+
+    public Long getId() { return id; }
+    public Long getCompanyAddressId() { return companyAddressId; }
+    public BigDecimal getReturnAmount() { return returnAmount; }
+    public String getHandleNote() { return handleNote; }
+    public String getHandleMan() { return handleMan; }
+    public String getReceiveNote() { return receiveNote; }
+    public String getReceiveMan() { return receiveMan; }
+    public Integer getStatus() { return status; }
 }

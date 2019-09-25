@@ -46,16 +46,16 @@ public class OmsOrderReturnReasonController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("批量删除退货原因")
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult delete(@RequestParam("ids") List<Long> ids) {
-        int count = orderReturnReasonService.delete(ids);
-        if (count > 0) {
-            return CommonResult.success(count);
-        }
-        return CommonResult.failed();
-    }
+//    @ApiOperation("批量删除退货原因")
+//    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult delete(@RequestParam("ids") List<Long> ids) {
+//        int count = orderReturnReasonService.delete(ids);
+//        if (count > 0) {
+//            return CommonResult.success(count);
+//        }
+//        return CommonResult.failed();
+//    }
 
     @ApiOperation("分页查询全部退货原因")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -86,6 +86,17 @@ public class OmsOrderReturnReasonController {
         return CommonResult.failed();
     }
 
+//    @ApiOperation("修改退货原因")
+//    @RequestMapping(value = "/update", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult update(@RequestBody OmsOrderReturnReason returnReason) {
+//        int count = orderReturnReasonService.update(returnReason.getId(), returnReason);
+//        if (count > 0) {
+//            return CommonResult.success(count);
+//        }
+//        return CommonResult.failed();
+//    }
+
     @ApiOperation("修改退货原因启用状态")
     @RequestMapping(value = "/status", method = RequestMethod.PUT)
     @ResponseBody
@@ -97,12 +108,22 @@ public class OmsOrderReturnReasonController {
         return CommonResult.failed();
     }
 
-
     @ApiOperation("修改退货原因")
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
     public CommonResult update(@RequestBody OmsOrderReturnReason returnReason) {
         int count = orderReturnReasonService.update(returnReason.getId(), returnReason);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("批量删除退货原因")
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    @ResponseBody
+    public CommonResult delete(@RequestParam(value = "ids") List<Long> ids) {
+        int count = orderReturnReasonService.delete(ids);
         if (count > 0) {
             return CommonResult.success(count);
         }
