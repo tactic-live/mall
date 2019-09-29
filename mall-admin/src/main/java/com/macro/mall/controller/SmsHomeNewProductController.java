@@ -2,6 +2,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.dto.SmsHomeNewProductSortParam;
 import com.macro.mall.model.SmsHomeNewProduct;
 import com.macro.mall.service.SmsHomeNewProductService;
 import io.swagger.annotations.Api;
@@ -39,6 +40,17 @@ public class SmsHomeNewProductController {
     @ResponseBody
     public CommonResult updateSort(@PathVariable Long id, Integer sort) {
         int count = homeNewProductService.updateSort(id, sort);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改推荐排序")
+    @RequestMapping(value = "/sort", method = RequestMethod.PUT)
+    @ResponseBody
+    public CommonResult updateSort(@RequestBody SmsHomeNewProductSortParam smsHomeNewProductSortParam) {
+        int count = homeNewProductService.updateSort(smsHomeNewProductSortParam.getId(), smsHomeNewProductSortParam.getSort());
         if (count > 0) {
             return CommonResult.success(count);
         }
