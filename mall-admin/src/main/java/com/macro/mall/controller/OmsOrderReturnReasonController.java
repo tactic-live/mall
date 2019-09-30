@@ -2,6 +2,7 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.dto.IdList;
 import com.macro.mall.model.OmsOrderReturnReason;
 import com.macro.mall.service.OmsOrderReturnReasonService;
 import com.macro.mall.dto.OmsUpdateReturnReasonStatusParam;
@@ -98,7 +99,7 @@ public class OmsOrderReturnReasonController {
 //    }
 
     @ApiOperation("修改退货原因启用状态")
-    @RequestMapping(value = "/status", method = RequestMethod.PUT)
+    @RequestMapping(value = "/status", method = RequestMethod.PATCH)
     @ResponseBody
     public CommonResult updateStatus(@RequestBody OmsUpdateReturnReasonStatusParam returnReasonStatusParam) {
         int count = orderReturnReasonService.updateStatus(returnReasonStatusParam.getIds(), returnReasonStatusParam.getStatus());
@@ -109,7 +110,7 @@ public class OmsOrderReturnReasonController {
     }
 
     @ApiOperation("修改退货原因")
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     @ResponseBody
     public CommonResult update(@RequestBody OmsOrderReturnReason returnReason) {
         int count = orderReturnReasonService.update(returnReason.getId(), returnReason);
@@ -122,8 +123,8 @@ public class OmsOrderReturnReasonController {
     @ApiOperation("批量删除退货原因")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public CommonResult delete(@RequestParam(value = "ids") List<Long> ids) {
-        int count = orderReturnReasonService.delete(ids);
+    public CommonResult delete(@RequestBody IdList idList) {
+        int count = orderReturnReasonService.delete(idList.getIds());
         if (count > 0) {
             return CommonResult.success(count);
         }
