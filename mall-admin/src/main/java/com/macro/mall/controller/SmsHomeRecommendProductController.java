@@ -4,6 +4,7 @@ import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.dto.SmsHotRecommendSortParam;
 import com.macro.mall.dto.SmsHotRecommendStatusParam;
+import com.macro.mall.dto.SmsRecommendStatusParam;
 import com.macro.mall.model.SmsHomeRecommendProduct;
 import com.macro.mall.service.SmsHomeRecommendProductService;
 import io.swagger.annotations.Api;
@@ -81,10 +82,10 @@ public class SmsHomeRecommendProductController {
     }
 
     @ApiOperation("批量修改推荐状态")
-    @RequestMapping(value = "/recommendStatus", method = RequestMethod.PUT)
+    @RequestMapping(value = "/recommendStatus", method = RequestMethod.PATCH)
     @ResponseBody
-    public CommonResult updateRecommendStatus(@RequestBody SmsHotRecommendStatusParam hotRecommendStatusParam) {
-        int count = recommendProductService.updateRecommendStatus(hotRecommendStatusParam.getIds(), hotRecommendStatusParam.getRecommendStatus());
+    public CommonResult updateRecommendStatus(@RequestBody SmsRecommendStatusParam SmsRecommendStatusParam) {
+        int count = recommendProductService.updateRecommendStatus(SmsRecommendStatusParam.getIds(), SmsRecommendStatusParam.getRecommendStatus());
         if (count > 0) {
             return CommonResult.success(count);
         }
