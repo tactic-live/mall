@@ -3,6 +3,7 @@ package com.macro.mall.controller;
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.dto.IdList;
+import com.macro.mall.dto.SmsRecommendStatusParam;
 import com.macro.mall.dto.SmsSortParam;
 import com.macro.mall.model.SmsHomeNewProduct;
 import com.macro.mall.service.SmsHomeNewProductService;
@@ -85,6 +86,17 @@ public class SmsHomeNewProductController {
     @ResponseBody
     public CommonResult updateRecommendStatus(@RequestParam("ids") List<Long> ids, @RequestParam Integer recommendStatus) {
         int count = homeNewProductService.updateRecommendStatus(ids, recommendStatus);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改后-批量修改推荐状态")
+    @RequestMapping(value = "/recommendStatus", method = RequestMethod.PATCH)
+    @ResponseBody
+    public CommonResult updateRecommendStatus(@RequestBody SmsRecommendStatusParam smsRecommendStatusParam) {
+        int count = homeNewProductService.updateRecommendStatus(smsRecommendStatusParam.getIds(), smsRecommendStatusParam.getRecommendStatus());
         if (count > 0) {
             return CommonResult.success(count);
         }
