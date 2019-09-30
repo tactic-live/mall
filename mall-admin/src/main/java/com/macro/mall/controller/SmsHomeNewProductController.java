@@ -2,7 +2,8 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
-import com.macro.mall.dto.SmsHomeNewProductSortParam;
+import com.macro.mall.dto.IdList;
+import com.macro.mall.dto.SmsSortParam;
 import com.macro.mall.model.SmsHomeNewProduct;
 import com.macro.mall.service.SmsHomeNewProductService;
 import io.swagger.annotations.Api;
@@ -46,11 +47,11 @@ public class SmsHomeNewProductController {
         return CommonResult.failed();
     }
 
-    @ApiOperation("修改推荐排序")
+    @ApiOperation("修改后-修改推荐排序")
     @RequestMapping(value = "/sort", method = RequestMethod.PUT)
     @ResponseBody
-    public CommonResult updateSort(@RequestBody SmsHomeNewProductSortParam smsHomeNewProductSortParam) {
-        int count = homeNewProductService.updateSort(smsHomeNewProductSortParam.getId(), smsHomeNewProductSortParam.getSort());
+    public CommonResult updateSort(@RequestBody SmsSortParam smsSortParam) {
+        int count = homeNewProductService.updateSort(smsSortParam.getId(), smsSortParam.getSort());
         if (count > 0) {
             return CommonResult.success(count);
         }
@@ -62,6 +63,17 @@ public class SmsHomeNewProductController {
     @ResponseBody
     public CommonResult delete(@RequestParam("ids") List<Long> ids) {
         int count = homeNewProductService.delete(ids);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改后-批量删除推荐")
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseBody
+    public CommonResult delete1(@RequestBody IdList idList) {
+        int count = homeNewProductService.delete(idList.getIds());
         if (count > 0) {
             return CommonResult.success(count);
         }
