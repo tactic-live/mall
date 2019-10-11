@@ -2,9 +2,9 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
-import com.macro.mall.dto.SmsHotRecommendSortParam;
-import com.macro.mall.dto.SmsHotRecommendStatusParam;
+import com.macro.mall.dto.IdList;
 import com.macro.mall.dto.SmsRecommendStatusParam;
+import com.macro.mall.dto.SmsSortParam;
 import com.macro.mall.model.SmsHomeRecommendProduct;
 import com.macro.mall.service.SmsHomeRecommendProductService;
 import io.swagger.annotations.Api;
@@ -95,8 +95,8 @@ public class SmsHomeRecommendProductController {
     @ApiOperation("批量删除推荐")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
-    public CommonResult delete(@RequestParam("ids") List<Long> ids) {
-        int count = recommendProductService.delete(ids);
+    public CommonResult delete(@RequestBody IdList idList) {
+        int count = recommendProductService.delete(idList.getIds());
         if (count > 0) {
             return CommonResult.success(count);
         }
@@ -104,10 +104,10 @@ public class SmsHomeRecommendProductController {
     }
 
     @ApiOperation("修改推荐排序")
-    @RequestMapping(value = "/sort", method = RequestMethod.PUT)
+    @RequestMapping(value = "/sort", method = RequestMethod.PATCH)
     @ResponseBody
-    public CommonResult updateSort(@RequestBody SmsHotRecommendSortParam hotRecommendSortParam) {
-        int count = recommendProductService.updateSort(hotRecommendSortParam.getId(), hotRecommendSortParam.getSort());
+    public CommonResult updateSort(@RequestBody SmsSortParam smsSortParam) {
+        int count = recommendProductService.updateSort(smsSortParam.getId(), smsSortParam.getSort());
         if (count > 0) {
             return CommonResult.success(count);
         }
