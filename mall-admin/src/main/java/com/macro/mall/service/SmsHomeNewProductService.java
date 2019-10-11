@@ -14,7 +14,7 @@ public interface SmsHomeNewProductService {
      * 添加首页推荐
      */
     @Transactional
-    int create(List<SmsHomeNewProduct> homeNewProductList);
+    List<SmsHomeNewProduct> create(List<SmsHomeNewProduct> homeNewProductList);
 
     /**
      * 修改推荐排序

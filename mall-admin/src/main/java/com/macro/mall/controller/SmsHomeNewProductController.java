@@ -26,13 +26,24 @@ public class SmsHomeNewProductController {
     @Autowired
     private SmsHomeNewProductService homeNewProductService;
 
-    @ApiOperation("添加首页推荐品牌")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    @ApiOperation("添加首页推荐品牌")
+//    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult create(@RequestBody List<SmsHomeNewProduct> homeBrandList) {
+//        int count = homeNewProductService.create(homeBrandList);
+//        if (count > 0) {
+//            return CommonResult.success(count);
+//        }
+//        return CommonResult.failed();
+//    }
+
+    @ApiOperation("修改后-添加首页推荐品牌")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public CommonResult create(@RequestBody List<SmsHomeNewProduct> homeBrandList) {
-        int count = homeNewProductService.create(homeBrandList);
-        if (count > 0) {
-            return CommonResult.success(count);
+        List<SmsHomeNewProduct> result = homeNewProductService.create(homeBrandList);
+        if (result.size() > 0) {
+            return CommonResult.success(result);
         }
         return CommonResult.failed();
     }

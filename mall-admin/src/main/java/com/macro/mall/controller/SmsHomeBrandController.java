@@ -2,6 +2,9 @@ package com.macro.mall.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.dto.IdList;
+import com.macro.mall.dto.SmsRecommendStatusParam;
+import com.macro.mall.dto.SmsSortParam;
 import com.macro.mall.model.SmsHomeBrand;
 import com.macro.mall.service.SmsHomeBrandService;
 import io.swagger.annotations.Api;
@@ -23,13 +26,24 @@ public class SmsHomeBrandController {
     @Autowired
     private SmsHomeBrandService homeBrandService;
 
-    @ApiOperation("添加首页推荐品牌")
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    @ApiOperation("添加首页推荐品牌")
+//    @RequestMapping(value = "/create", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult create(@RequestBody List<SmsHomeBrand> homeBrandList) {
+//        int count = homeBrandService.create(homeBrandList);
+//        if (count > 0) {
+//            return CommonResult.success(count);
+//        }
+//        return CommonResult.failed();
+//    }
+
+    @ApiOperation("修改后-添加首页推荐品牌")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public CommonResult create(@RequestBody List<SmsHomeBrand> homeBrandList) {
-        int count = homeBrandService.create(homeBrandList);
-        if (count > 0) {
-            return CommonResult.success(count);
+        List<SmsHomeBrand> result = homeBrandService.create(homeBrandList);
+        if (result.size() > 0) {
+            return CommonResult.success(result);
         }
         return CommonResult.failed();
     }
@@ -39,6 +53,17 @@ public class SmsHomeBrandController {
     @ResponseBody
     public CommonResult updateSort(@PathVariable Long id, Integer sort) {
         int count = homeBrandService.updateSort(id, sort);
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改后-修改品牌排序")
+    @RequestMapping(value = "/sort", method = RequestMethod.PUT)
+    @ResponseBody
+    public CommonResult updateSort(@RequestBody SmsSortParam smsSortParam) {
+        int count = homeBrandService.updateSort(smsSortParam.getId(), smsSortParam.getSort());
         if (count > 0) {
             return CommonResult.success(count);
         }
@@ -56,6 +81,17 @@ public class SmsHomeBrandController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("修改后-批量删除推荐品牌")
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @ResponseBody
+    public CommonResult delete(@RequestBody IdList idList) {
+        int count = homeBrandService.delete(idList.getIds());
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
     @ApiOperation("批量修改推荐状态")
     @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
     @ResponseBody
@@ -67,8 +103,23 @@ public class SmsHomeBrandController {
         return CommonResult.failed();
     }
 
+    @ApiOperation("修改后-批量修改推荐状态")
+    @RequestMapping(value = "/recommendStatus", method = RequestMethod.PATCH)
+    @ResponseBody
+    public CommonResult updateRecommendStatus(@RequestBody SmsRecommendStatusParam smsRecommendStatusParam) {
+        int count = homeBrandService.updateRecommendStatus(smsRecommendStatusParam.getIds(), smsRecommendStatusParam.getRecommendStatus());
+//        if (smsRecommendStatusParam.getRecommendStatus() == 0) {
+//            // 如果是取消推荐状态 把排序值设为0
+//            updateSort()
+//        }
+        if (count > 0) {
+            return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
     @ApiOperation("分页查询推荐品牌")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<SmsHomeBrand>> list(@RequestParam(value = "brandName", required = false) String brandName,
                                                        @RequestParam(value = "recommendStatus", required = false) Integer recommendStatus,

@@ -14,7 +14,7 @@ public interface SmsHomeBrandService {
      * 添加首页品牌推荐
      */
     @Transactional
-    int create(List<SmsHomeBrand> homeBrandList);
+    List<SmsHomeBrand> create(List<SmsHomeBrand> homeBrandList);
 
     /**
      * 修改品牌推荐排序
