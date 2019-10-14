@@ -63,15 +63,15 @@ public class SmsHomeAdvertiseController {
         return CommonResult.success(advertise);
     }
 
-    @ApiOperation("修改广告")
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult update(@PathVariable Long id, @RequestBody SmsHomeAdvertise advertise) {
-        int count = advertiseService.update(id, advertise);
-        if (count > 0)
-            return CommonResult.success(count);
-        return CommonResult.failed();
-    }
+//    @ApiOperation("修改广告")
+//    @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+//    @ResponseBody
+//    public CommonResult update(@PathVariable Long id, @RequestBody SmsHomeAdvertise advertise) {
+//        int count = advertiseService.update(id, advertise);
+//        if (count > 0)
+//            return CommonResult.success(count);
+//        return CommonResult.failed();
+//    }
 
     @ApiOperation("分页查询广告")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -100,6 +100,16 @@ public class SmsHomeAdvertiseController {
     @ResponseBody
     public CommonResult delete(@RequestBody IdList idList) {
         int count = advertiseService.delete(idList.getIds());
+        if (count > 0)
+            return CommonResult.success(count);
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("修改广告")
+    @RequestMapping(value = "/update", method = RequestMethod.PATCH)
+    @ResponseBody
+    public CommonResult update(@RequestBody SmsHomeAdvertise advertise) {
+        int count = advertiseService.update(advertise.getId(), advertise);
         if (count > 0)
             return CommonResult.success(count);
         return CommonResult.failed();
