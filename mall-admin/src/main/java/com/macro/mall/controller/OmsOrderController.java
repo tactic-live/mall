@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单管理Controller
@@ -38,8 +39,8 @@ public class OmsOrderController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<OmsOrder>> fetch(OmsOrderQueryParam queryParam,
-                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         return this.list(queryParam, pageSize, pageNum);
     }
 
@@ -61,6 +62,21 @@ public class OmsOrderController {
         int count = orderService.close(ids, note);
         if (count > 0) {
             return CommonResult.success(count);
+        }
+        return CommonResult.failed();
+    }
+
+    @ApiOperation("批量关闭订单")
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public CommonResult closeOrder(@RequestBody List<OmsOrder> orderList) {
+        List<Long> ids = orderList.stream().map(omsOrder -> omsOrder.getId()).collect(Collectors.toList());
+        if (ids.size() != 0) {
+            String note = orderList.get(0).getNote();
+            int count = orderService.close(ids, note);
+            if (count > 0) {
+                return CommonResult.success(count);
+            }
         }
         return CommonResult.failed();
     }
