@@ -5,6 +5,7 @@ import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.dto.PmsProductParam;
 import com.macro.mall.dto.PmsProductQueryParam;
 import com.macro.mall.dto.PmsProductResult;
+import com.macro.mall.dto.SmsFlashProductionResult;
 import com.macro.mall.model.PmsProduct;
 import com.macro.mall.service.PmsProductService;
 import io.swagger.annotations.Api;
@@ -83,6 +84,17 @@ public class PmsProductController {
                                                         @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
                                                         @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         return this.getList(productQueryParam, pageSize, pageNum);
+    }
+
+    @ApiOperation("查询秒杀时段对应商品")
+    @RequestMapping(value = "/getListByFlash", method = RequestMethod.GET)
+    @ResponseBody
+    @PreAuthorize("hasAuthority('pms:product:read')")
+    public CommonResult<CommonPage<SmsFlashProductionResult>> getListByFlash(@RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                                             @RequestParam(value = "flashPromotionId" ) Long flashPromotionId,
+                                                                             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        List<SmsFlashProductionResult> productList = productService.getListByFlash(pageSize, pageNum , flashPromotionId);
+        return CommonResult.success(CommonPage.restPage(productList));
     }
 
     @ApiOperation("根据商品名称或货号模糊查询")
