@@ -18,7 +18,6 @@ public interface SmsHomeNewProductMapper {
 
 	int insertSelective(SmsHomeNewProduct record);
 
-	//    List<SmsHomeNewProduct> selectByExample(SmsHomeNewProductExample example);
 	List<SmsHomeNewProduct> selectByExample(@Param("productName") String productName, @Param("recommendStatus") Integer recommendStatus);
 
 	SmsHomeNewProduct selectByPrimaryKey(Long id);
