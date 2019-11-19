@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.macro.mall.dao.SmsFlashProductionDao">
+    <resultMap id="flashProductMap" type="com.macro.mall.dto.SmsFlashProductionResult">
+        <id  property="id" column="id"></id>
+        <result property="flashPromotionCount" column="flash_promotion_count" ></result>
+        <result property="flashPromotionLimit" column="flash_promotion_limit" ></result>
+        <result property="productId" column="product_id" ></result>
+        <result property="flashPromotionPrice" column="flash_promotion_price" ></result>
+        <result property="flashPromotionSessionId" column="flash_promotion_session_id" ></result>
+        <result property="endTime" column="end_time" ></result>
+        <result property="startTime" column="start_time" ></result>
+        <result property="flashPromotionSessionName" column="smsFlashPromotionSessionName" ></result>
+        <result property="productName" column="productionName" ></result>
+        <result property="brandName" column="brand_name" ></result>
+        <result property="title" column="title" ></result>
+    </resultMap>
+    <select id="getListByFlash" resultMap="flashProductMap">
+        SELECT
+            ssfpp.id,
+            ssfpp.flash_promotion_count,
+            ssfpp.flash_promotion_limit,
+            ssfpp.product_id,
+            ssfpp.flash_promotion_price,
+            ssfpp.flash_promotion_session_id,
+            sfps.end_time,
+            sfps.start_time,
+            sfps.name  as smsFlashPromotionSessionName,
+            pp.name as productionName,
+            pp.brand_name ,
+            sfp.title
+        FROM
+            sms_flash_promotion_product_relation  ssfpp
+            LEFT JOIN sms_flash_promotion sfp ON sfp.id =  ssfpp.flash_promotion_id
+            LEFT JOIN pms_product pp ON pp.id = ssfpp.product_id
+            LEFT JOIN sms_flash_promotion_session sfps ON ssfpp.flash_promotion_session_id = sfps.id
+        WHERE  sfp.id = #{flashPromotionId}
+  </select>
+</mapper>

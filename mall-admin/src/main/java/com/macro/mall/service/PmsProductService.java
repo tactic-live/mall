@@ -3,6 +3,7 @@ package com.macro.mall.service;
 import com.macro.mall.dto.PmsProductParam;
 import com.macro.mall.dto.PmsProductQueryParam;
 import com.macro.mall.dto.PmsProductResult;
+import com.macro.mall.dto.SmsFlashProductionResult;
 import com.macro.mall.model.PmsProduct;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -70,4 +71,9 @@ public interface PmsProductService {
      * 根据商品名称或者货号模糊查询
      */
     List<PmsProduct> list(String keyword);
+    /**
+     * 查询秒杀时段对应商品
+     * @return
+     */
+    List<SmsFlashProductionResult> getListByFlash(Integer pageSize, Integer pageNum , Long flashPromotionId);
 }

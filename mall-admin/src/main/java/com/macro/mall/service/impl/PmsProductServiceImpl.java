@@ -5,6 +5,7 @@ import com.macro.mall.dao.*;
 import com.macro.mall.dto.PmsProductParam;
 import com.macro.mall.dto.PmsProductQueryParam;
 import com.macro.mall.dto.PmsProductResult;
+import com.macro.mall.dto.SmsFlashProductionResult;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.service.PmsProductService;
@@ -63,6 +64,9 @@ public class PmsProductServiceImpl implements PmsProductService {
     private PmsProductDao productDao;
     @Autowired
     private PmsProductVertifyRecordDao productVertifyRecordDao;
+
+    @Autowired
+    private SmsFlashProductionDao smsFlashProductionDao;
 
     @Override
     public int create(PmsProductParam productParam) {
@@ -264,6 +268,12 @@ public class PmsProductServiceImpl implements PmsProductService {
             productExample.or().andDeleteStatusEqualTo(0).andProductSnLike("%" + keyword + "%");
         }
         return productMapper.selectByExample(productExample);
+    }
+
+    @Override
+    public List<SmsFlashProductionResult> getListByFlash(Integer pageSize, Integer pageNum, Long flashPromotionId) {
+        PageHelper.startPage(pageNum, pageSize);
+        return smsFlashProductionDao.getListByFlash(flashPromotionId);
     }
 
     /**
